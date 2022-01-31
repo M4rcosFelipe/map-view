@@ -110,26 +110,22 @@ function Map({ markersList }: Props) {
   }
 
   function drawMap(markers: any[], map: any) {
-    "draw =", markers;
     markers.map((marker: any) => toggleMarker(marker, map));
   }
 
   function cleanMap() {
-    ("clean");
     currentMarkers.map((marker: any) => {
       toggleMarker(marker, null);
     });
   }
 
   function updateMap(markers: any[], map: any) {
-    ("UPDATE");
     cleanMap();
     drawMap(markers, map);
   }
 
   function buildMarkers(markersData: any[]) {
     cleanMap();
-    ("---build---");
     const markers = markersData.map((marker: any) => createMarker(marker));
 
     setCurrentMarkers(markers);
