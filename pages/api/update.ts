@@ -20,8 +20,6 @@ export default async function handler(
     "address"
   );
   const cellValue = `${cell}${row}`;
-  "cellValue", cellValue;
-  "value", inputValues;
   await MarkersService.updateCell(cellValue, inputValues);
   res.status(200);
   return;

@@ -127,7 +127,7 @@ class GoogleSpreadSheetService {
     const spreadsheet = await this.getSpreadSheet();
 
     const response = await spreadsheet.spreadsheets.values.update({
-      spreadsheetId: "1-Umf8JNNfVGZtmdPIf4PU2a5E7wFJYdBg90aP9tv6qs",
+      spreadsheetId: process.env.SPREADSHEET_ID,
       valueInputOption: "RAW",
       range: cell,
       requestBody: {

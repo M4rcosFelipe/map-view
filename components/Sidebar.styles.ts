@@ -37,7 +37,7 @@ export const CloseButton = styled.button<CloseButtonProps>`
   top: 0px;
   & img {
     width: 100%;
-    transform: ${({ isOpen }) => (isOpen ? "rotate(-90deg)" : "rotate(90deg)")};
+    transform: ${({ isOpen }) => (isOpen ? "rotate(90deg)" : "rotate(-90deg)")};
     transition: all 0.1s ease-in;
   }
 `;
