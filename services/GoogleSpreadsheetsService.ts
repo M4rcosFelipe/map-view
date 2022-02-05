@@ -125,10 +125,10 @@ class GoogleSpreadSheetService {
 
   async updateCell(cell: any, value: any) {
     const spreadsheet = await this.getSpreadSheet();
-
+    // value = JSON.stringify(value);
     const response = await spreadsheet.spreadsheets.values.update({
       spreadsheetId: process.env.SPREADSHEET_ID,
-      valueInputOption: "RAW",
+      valueInputOption: "USER_ENTERED",
       range: cell,
       requestBody: {
         majorDimension: "ROWS",

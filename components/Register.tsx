@@ -18,21 +18,33 @@ import AddIcon from "../public/add-icon.png";
 interface RegisterProps {
   selectOptions: any;
 }
+interface formObjectInterface {
+  lider: string;
+  contato: string;
+}
+const formObject: formObjectInterface = {
+  lider: "",
+  contato: "",
+};
 function Register({ selectOptions }: RegisterProps) {
-  const [inputValues, setInputValues] = useState<string[]>([""]);
+  const [inputValues, setInputValues] = useState<formObjectInterface[]>([
+    formObject,
+  ]);
   const [selectValue, setSelectValue] = useState("");
 
   async function send() {
-    const data = {
-      selectValue,
-      inputValues: inputValues.filter(Boolean).join(),
-    };
-    const lidersColumn = "G";
     if (selectValue == "") return;
-    data;
+
+    const updateData = { value: inputValues, column: "lideres" };
+
+    const searchData = {
+      searchValue: selectValue,
+      searchColumn: "address",
+    };
+
     fetch("/api/update", {
       method: "POST",
-      body: JSON.stringify({ cell: lidersColumn, data }),
+      body: JSON.stringify({ searchData, updateData }),
     });
   }
 
@@ -42,21 +54,23 @@ function Register({ selectOptions }: RegisterProps) {
 
   function addInput(e: any) {
     e.preventDefault();
-    const values = [...inputValues, ""];
+    const values = [...inputValues, formObject];
     setInputValues(values);
   }
 
   function handleInputChange(index: number, e: any) {
-    const newValue = e.target.value;
-    const values = [...inputValues];
-
-    values[index] = newValue;
-
-    setInputValues(values);
+    const value = e.target.value;
+    const key = e.target.name;
+    const newValue = { [key]: value };
+    const currentInputValues = [...inputValues];
+    const currentInput = currentInputValues[index];
+    const newInputValue = { ...currentInput, ...newValue };
+    currentInputValues[index] = newInputValue;
+    setInputValues(currentInputValues);
   }
 
   function removeInput(index: number) {
-    const values = [...inputValues];
+    const values = inputValues;
     values.splice(index, 1);
     setInputValues(values);
   }
@@ -72,11 +86,17 @@ function Register({ selectOptions }: RegisterProps) {
         ))}
       </Select>
       <InputContainer>
-        {inputValues.map((inputValue: any, index: number) => {
+        {inputValues.map((inputValue: formObjectInterface, index: number) => {
           return (
             <InputWrapper key={index}>
               <Input
-                value={inputValue}
+                name="lider"
+                value={inputValue.lider}
+                onChange={(e) => handleInputChange(index, e)}
+              />
+              <Input
+                name="contato"
+                value={inputValue.contato}
                 onChange={(e) => handleInputChange(index, e)}
               />
               <Button
