@@ -2,13 +2,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import GoogleSpreadsheetsService from "../../services/GoogleSpreadsheetsService";
 
-type Data = {
-  name: any;
-};
-
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<any>
 ) {
   const { searchData, updateData } = JSON.parse(req.body);
   const { searchValue, searchColumn } = searchData;
@@ -23,26 +19,29 @@ export default async function handler(
   );
 
   const cell = `${column}${row}`;
-  const data = formatResponse(updateData.value);
-  await GoogleSpreadsheetsService.updateCell(cell, data);
-  res.status(200);
-  return;
-}
-
-function cleanResponse(data: string) {
-  const cleanData = data.replace(/[-&\/\\^$*+?.()|[\]{}\"]/g, "");
-  return cleanData;
+  const formatedresponse = formatResponse(updateData.value);
+  const result = await GoogleSpreadsheetsService.updateCell(
+    cell,
+    formatedresponse
+  );
+  const { status, data } = result;
+  res.status(status);
+  res.send(data);
 }
 
 function formatResponse(data: any[]) {
-  const formatedData = data.map((item: any) => {
-    const { lider, contato } = item;
-    return { [lider]: contato };
-  });
-  const formatedResponse = cleanResponse(JSON.stringify(formatedData)).replace(
-    /,/g,
-    "&CHAR(10)"
-  );
+  const lideres = data.map(lider).filter(Boolean).toString();
+  const contatos = data.map(contato).filter(Boolean).toString();
+  if (lideres == "" && contatos == "") {
+    return "";
+  }
+  return `=SPLIT("${lideres};${contatos}";";")`;
+}
 
-  return formatedResponse;
+function contato(item: any) {
+  return item.contato;
+}
+
+function lider(item: any) {
+  return item.lider;
 }

@@ -123,9 +123,8 @@ class GoogleSpreadSheetService {
     return assignedData;
   }
 
-  async updateCell(cell: any, value: any) {
+  async updateCell(cell: any, value: string) {
     const spreadsheet = await this.getSpreadSheet();
-    // value = JSON.stringify(value);
     const response = await spreadsheet.spreadsheets.values.update({
       spreadsheetId: process.env.SPREADSHEET_ID,
       valueInputOption: "USER_ENTERED",

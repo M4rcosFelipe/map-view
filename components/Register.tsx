@@ -26,6 +26,7 @@ const formObject: formObjectInterface = {
   lider: "",
   contato: "",
 };
+
 function Register({ selectOptions }: RegisterProps) {
   const [inputValues, setInputValues] = useState<formObjectInterface[]>([
     formObject,
@@ -33,8 +34,10 @@ function Register({ selectOptions }: RegisterProps) {
   const [selectValue, setSelectValue] = useState("");
 
   async function send() {
-    if (selectValue == "") return;
-
+    if (!isFormValid(selectValue, inputValues)) {
+      console.log("Formulário inválido");
+      return;
+    }
     const updateData = { value: inputValues, column: "lideres" };
 
     const searchData = {
@@ -42,10 +45,24 @@ function Register({ selectOptions }: RegisterProps) {
       searchColumn: "address",
     };
 
-    fetch("/api/update", {
+    const response = await fetch("/api/update", {
       method: "POST",
       body: JSON.stringify({ searchData, updateData }),
     });
+    console.log(response);
+  }
+
+  function isFormValid(selectValue: string, data: formObjectInterface[]) {
+    let isValid = true;
+
+    for (const item of data) {
+      if (item.lider != "" && item.contato == "") {
+        isValid = false;
+        break;
+      }
+    }
+    if (selectValue == "") isValid = false;
+    return isValid;
   }
 
   function handleSelectChange(e: any) {
@@ -70,7 +87,7 @@ function Register({ selectOptions }: RegisterProps) {
   }
 
   function removeInput(index: number) {
-    const values = inputValues;
+    const values = [...inputValues];
     values.splice(index, 1);
     setInputValues(values);
   }
