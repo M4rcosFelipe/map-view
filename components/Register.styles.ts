@@ -1,47 +1,66 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  width: 700px;
+  max-width: 900px;
   margin: auto auto;
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  align-items: flex-end;
+  padding: 40px;
   flex-shrink: 0;
+  background: #ff8519;
+  border-radius: 40px;
+  margin-top: 40px;
 `;
 
 export const InputContainer = styled.div`
   width: 400px;
   display: flex;
   flex-direction: column;
-  margin-right: 15px;
+  margin-right: 20px;
 `;
 
 export const InputWrapper = styled.div`
-  display: flex;
-  margin-bottom: 10px;
+  display: block;
+  margin-bottom: 40px;
+  background: #F37F18;
+  padding: 20px;
+  width: 400px;
+  border-radius: 20px;
 `;
 
 export const Input = styled.input`
   display: block;
   width: 100%;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  background: #f2f2f2;
   padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #000;
   outline: none;
-  margin-right: 10px;
+  border: 3px solid #720800;
+  border-radius: 10px;
+  font-family: Courier, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
 `;
 
 export const Select = styled.select`
-  height: max-content;
-  outline: none;
+  display: block;
+  width: 100%;
+  background: #f2f2f2;
   padding: 10px;
-  border-radius: 5px;
-  width: 50%;
-  margin-right: 20px;
+  outline: none;
+  border: 3px solid #720800;
+  border-radius: 10px;
+  font-family: Courier, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
 `;
 
 export const ButtonWrapper = styled.div`
   align-self: end;
+  margin-top: -20px;
+  width: 100%;
 `;
 
 export const Option = styled.option``;

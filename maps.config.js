@@ -1,8 +1,8 @@
 const MAPS_CONFIG = {
-  filters: ["hasLiders"],
+  filters: ["Mostrar líderes", "Contato", "Associação"],
   markers: {
-    flag: { field: "hasLiders", value: "TRUE", color: "#4ad47f" },
-    defaultColor: "#eb4034",
+    flag: { field: "Mostrar líderes", value: "TRUE", color: "#4ad47f" },
+    defaultColor: "#ff7224",
   },
 };
 

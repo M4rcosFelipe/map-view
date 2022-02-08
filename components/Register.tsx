@@ -10,6 +10,13 @@ import {
   InputWrapper,
   ButtonWrapper,
 } from "./Register.styles";
+import {
+  CloseButton,
+  Field,
+  Label,
+  SearchButton,
+  Count,
+} from "./Sidebar.styles";
 import Button from "./Button";
 
 import DeleteIcon from "../public/delete-icon.png";
@@ -32,13 +39,17 @@ function Register({ selectOptions }: RegisterProps) {
     formObject,
   ]);
   const [selectValue, setSelectValue] = useState("");
+  const [register, setRegister] = useState(false);
+
+  console.log(register);
 
   async function send() {
     if (!isFormValid(selectValue, inputValues)) {
-      console.log("Formulário inválido");
+      alert("Preencha todos os campos");
+      setRegister(false);
       return;
     }
-    const updateData = { value: inputValues, column: "lideres" };
+    const updateData = { value: inputValues, column: "Líderes" };
 
     const searchData = {
       searchValue: selectValue,
@@ -49,11 +60,11 @@ function Register({ selectOptions }: RegisterProps) {
       method: "POST",
       body: JSON.stringify({ searchData, updateData }),
     });
-    console.log(response);
   }
 
   function isFormValid(selectValue: string, data: formObjectInterface[]) {
     let isValid = true;
+    setRegister(true);
 
     for (const item of data) {
       if (item.lider != "" && item.contato == "") {
@@ -93,7 +104,15 @@ function Register({ selectOptions }: RegisterProps) {
   }
 
   return (
+    <>
+    <section style={register ? {display: 'block'} : {display: 'none'}}>
+      <h1 style={{fontSize: '30px', fontFamily: 'Courier', color: 'white', textAlign: 'center', marginTop: '200px'}}>Registro feito com sucesso!</h1>
+    </section>
+    <section style={register ? {display: 'none'} : {display: 'block'}}>
+    <h1 style={{fontSize: '30px', fontFamily: 'Courier', color: 'white', textAlign: 'center', marginTop: '40px'}}>Registre o líder</h1>
     <Container>
+      <div style={{display: 'flex', flexDirection: 'column', marginRight: '20px', alignSelf: 'flex-start'}}>
+      <Label>Igreja</Label>
       <Select onChange={handleSelectChange} value={selectValue}>
         <Option value="">Selecione:</Option>
         {selectOptions.map((option: any) => (
@@ -101,16 +120,19 @@ function Register({ selectOptions }: RegisterProps) {
             {`${option.name}, ${option.address}`}
           </Option>
         ))}
-      </Select>
+        </Select>
+        </div>
       <InputContainer>
         {inputValues.map((inputValue: formObjectInterface, index: number) => {
           return (
             <InputWrapper key={index}>
+              <Label>Líder</Label>
               <Input
                 name="lider"
                 value={inputValue.lider}
                 onChange={(e) => handleInputChange(index, e)}
               />
+              <Label>Contato</Label>
               <Input
                 name="contato"
                 value={inputValue.contato}
@@ -136,10 +158,12 @@ function Register({ selectOptions }: RegisterProps) {
           </Button>
         </ButtonWrapper>
       </InputContainer>
-      <Button color={"#2896eb"} fontColor={"#fff"} onClick={send}>
-        ENVIAR
+      <Button color={"#720800"} fontColor={"#fff"} onClick={send}>
+        Registrar
       </Button>
-    </Container>
+      </Container>
+      </section>
+      </>
   );
 }
 
