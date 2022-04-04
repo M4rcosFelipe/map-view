@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import Register from "../components/Register";
 import MarkerService from "../services/markersService";
 
@@ -6,7 +7,7 @@ interface RegisterPageProps {
 }
 
 function RegisterPage({ selectOptions }: RegisterPageProps) {
-  return <Register selectOptions={selectOptions} />;
+  return <Register selectOptions={selectOptions} />
 }
 
 export default RegisterPage;

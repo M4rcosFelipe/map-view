@@ -33,5 +33,8 @@ credentials.json
 # vercel
 .vercel
 
+# credentials
+credentials.json
+
 # typescript
 *.tsbuildinfo

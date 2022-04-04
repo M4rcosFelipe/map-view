@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Form from "./Form";
 import {
@@ -18,6 +18,7 @@ import {
   Count,
 } from "./Sidebar.styles";
 import Button from "./Button";
+import { useRouter } from 'next/router';
 
 import DeleteIcon from "../public/delete-icon.png";
 import AddIcon from "../public/add-icon.png";
@@ -35,13 +36,33 @@ const formObject: formObjectInterface = {
 };
 
 function Register({ selectOptions }: RegisterProps) {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      if (!window.localStorage.getItem("user")) {
+        router.push("/login")
+      } else {
+        const userData = window.localStorage.getItem("user");
+        setUser(JSON.parse(userData))
+      }
+    }
+  }, [])
+
+  function logout() {
+    if (typeof window !== undefined) {
+      router.push("/login");
+      window.localStorage.removeItem("user");
+    }
+  }
+
   const [inputValues, setInputValues] = useState<formObjectInterface[]>([
     formObject,
   ]);
+
   const [selectValue, setSelectValue] = useState("");
   const [register, setRegister] = useState(false);
-
-  console.log(register);
+  const [user, setUser] = useState([]);
 
   async function send() {
     if (!isFormValid(selectValue, inputValues)) {
@@ -49,6 +70,7 @@ function Register({ selectOptions }: RegisterProps) {
       setRegister(false);
       return;
     }
+    const user = window.localStorage.getItem("user")
     const updateData = { value: inputValues, column: "Líderes" };
 
     const searchData = {
@@ -58,7 +80,7 @@ function Register({ selectOptions }: RegisterProps) {
 
     const response = await fetch("/api/update", {
       method: "POST",
-      body: JSON.stringify({ searchData, updateData }),
+      body: JSON.stringify({ searchData, updateData,user }),
     });
   }
 
@@ -105,14 +127,38 @@ function Register({ selectOptions }: RegisterProps) {
 
   return (
     <>
-    <section style={register ? {display: 'block'} : {display: 'none'}}>
-      <h1 style={{fontSize: '30px', fontFamily: 'Courier', color: 'white', textAlign: 'center', marginTop: '200px'}}>Registro feito com sucesso!</h1>
+    <section style={register ? {display: 'flex', width: "400px", flexDirection: "column", justifyContent: "center", margin: "0 auto"} : {display: 'none'}}>
+      <h1 style={{fontSize: '30px', fontFamily: 'Courier', color: 'white', textAlign: 'center', marginTop: '200px', marginBottom: "30px"}}>Registro feito com sucesso!</h1>
+      <Button
+            color={"#28eb8d"}
+            fontColor={"#000"}
+            onClick={() => setRegister(false)}
+        >
+          Retornar à página de registro
+      </Button>
+      <p style={{fontFamily: "courier", fontWeight: "bold", color: "#fff", margin: "10px 0px 10px 0px", textAlign: "center"}}>ou</p>
+      <Button
+            color={"#720800"}
+            fontColor={"#fff"}
+            onClick={() => router.push('/')}
+        >
+          Consultar mapa
+      </Button>
     </section>
     <section style={register ? {display: 'none'} : {display: 'block'}}>
-    <h1 style={{fontSize: '30px', fontFamily: 'Courier', color: 'white', textAlign: 'center', marginTop: '40px'}}>Registre o líder</h1>
+    <h1 style={{fontSize: '30px', fontFamily: 'Courier', color: 'white', textAlign: 'center', marginTop: '40px'}}>Registre os líderes</h1>
     <Container>
       <div style={{display: 'flex', flexDirection: 'column', marginRight: '20px', alignSelf: 'flex-start'}}>
-      <Label>Igreja</Label>
+      <p style={{fontFamily: 'courier, arial', fontWeight: 'bold', fontSize: '18px', marginBottom: '10px'}}>Usuário <span style={{display: "block", color: '#fff', fontFamily: 'courier, arial', fontWeight: 'bold', fontSize: '24px'}}>{user.name}</span></p>
+      <Button
+          color={"#eb3b28"}
+          fontColor={"#000"}
+          onClick={() => logout()}
+        >
+          Sair
+      </Button>
+      <p style={{fontFamily: 'courier, arial', fontWeight: 'bold', fontSize: '18px', marginTop: '20px'}}>Associação <span style={{display: "block", color: '#fff', fontFamily: 'courier, arial', fontWeight: 'bold', fontSize: '24px'}}>{user.guild}</span></p>
+      <Label style={{marginTop: "20px"}}>Igreja</Label>
       <Select onChange={handleSelectChange} value={selectValue}>
         <Option value="">Selecione:</Option>
         {selectOptions.map((option: any) => (

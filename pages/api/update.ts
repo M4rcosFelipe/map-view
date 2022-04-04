@@ -6,8 +6,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { searchData, updateData } = JSON.parse(req.body);
+  const { searchData, updateData ,user} = JSON.parse(req.body);
   const { searchValue, searchColumn } = searchData;
+
 
   const row = await GoogleSpreadsheetsService.getRowNumberByUniqueValue(
     searchValue,
@@ -17,6 +18,14 @@ export default async function handler(
   const column = await GoogleSpreadsheetsService.getColumnLetter(
     updateData.column
   );
+
+  const guildColumn =  await GoogleSpreadsheetsService.getColumnLetter(
+    "Associação"
+  );
+const userGuild = JSON.parse(user).guild;
+  console.log(user)
+await updateGuild(guildColumn,row,userGuild)
+
 
   const cell = `${column}${row}`;
   const formatedresponse = formatResponse(updateData.value);
@@ -44,4 +53,14 @@ function contato(item: any) {
 
 function lider(item: any) {
   return item.lider;
+}
+
+async function updateGuild(column:number,row:any,guildName:string){
+
+  const guildCell = `${column}${row}`
+await GoogleSpreadsheetsService.updateCell(
+    guildCell,
+    guildName
+  );
+
 }
