@@ -42,22 +42,52 @@ function Login() {
 
     const usersLeaders = [
         {
-        name: "Bran Stark",
-        login: "bran_stark",
-        password: "bran@stark22",
-        guild: "Stark"
+            name: "Gestor da APS",
+            login: "aps_user",
+            password: "aps@22",
+            guild: "APS"
         },
         {
-        name: "Aeron Targaryen",
-        login: "aeron_targaryen",
-        password: "aeron@targaryen22",
-        guild: "Targaryen"
+            name: "Gestor da AP",
+            login: "ap_user",
+            password: "ap@22",
+            guild: "AP"
         },
         {
-        name: "Tyrion Lannister",
-        login: "tyrion_lannister",
-        password: "tyrion@lannister22",
-        guild: "Lannister"
+            name: "Gestor da APL",
+            login: "apl_user",
+            password: "apl@22",
+            guild: "APL"
+        },
+        {
+            name: "Gestor da APO",
+            login: "apo_user",
+            password: "apo@22",
+            guild: "APO"
+        },
+        {
+            name: "Gestor da APV",
+            login: "apv_user",
+            password: "apv@22",
+            guild: "APV"
+        },
+        {
+            name: "Gestor da APAC",
+            login: "apac_user",
+            password: "apac@22",
+            guild: "APAC"
+        },
+        {
+            name: "Gestor da APSE",
+            login: "apse_user",
+            password: "apse@22",
+            guild: "APSE"
+        },
+        {
+            name: "Gestor da APSO",
+            login: "apso_user",
+            password: "apso@22",
+            guild: "APSO"
         },
     ]
 

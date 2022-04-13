@@ -58,11 +58,20 @@ function Map({ markersList }: Props) {
   }
   function createInfoHTML(info: any) {
     const fields = splitObject(info.fields);
+    const permittedFields = ["Associação", "Contato", "Líderes", "address"];
     let infoHTML = `<h3 style="font-weight:bold;font-size: 16px;margin-bottom:10px;">${info.title}</h3>`;
     infoHTML += fields
       .map((field: any) => {
-        const [fieldName, fieldValue] = Object.entries(field)[0];
-        return `<p style="margin-bottom: 4px;"><strong style="margin-right: 5px;">${fieldName}: </strong>${fieldValue}</p>`;
+        let [fieldName, fieldValue] = Object.entries(field)[0];
+        if (field["Líderes"] || field["Contato"]) {
+          fieldValue = fieldValue.split(",").join("<br>- ");
+          fieldValue = `<p>- ${fieldValue}</p>`
+        }
+        if (permittedFields.includes(fieldName)) {
+          return `<p style="margin-top: 10px;"><strong style="margin-right: 5px;">${fieldName === "address" ? "Endereço" : fieldName}:</strong>${fieldValue}</p>`;
+        } else {
+          return ""
+        }
       })
       .reduce((field: any, acc: any) => (acc += field));
     return infoHTML;
@@ -80,17 +89,18 @@ function Map({ markersList }: Props) {
   }
 
   function getMarkerIcon(markerData: any) {
-    const { field, value, color } = MAPS_CONFIG.markers.flag;
-    const defaultColor = MAPS_CONFIG.markers.defaultColor;
-    return markerData[field] == value
-      ? `http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|${color.replace(
+    let color = "#ff0000";
+    if (markerData.Líderes) {
+      if (markerData.Líderes.split(",").length <= 5) {
+        color = "#ffff00";
+       } else {
+         color = "#00ff00"
+       }
+    }
+    return `http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|${color.replace(
           "#",
           ""
         )}`
-      : `http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|${defaultColor.replace(
-          "#",
-          ""
-        )}`;
   }
 
   function createMarker(markerData: any) {

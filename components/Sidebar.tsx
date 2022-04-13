@@ -23,8 +23,6 @@ function Sidebar({ filter, list, count }: SidebarProps) {
   const [showCount, setShowCount] = useState<boolean>(false);
   const [checkbox, setChekbox] = useState(false);
 
-  console.log(searchValue);
-
   function toogleSidebar() {
     setIsOpen(!isOpen);
   }
